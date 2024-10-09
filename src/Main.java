@@ -5,6 +5,7 @@ public class Main {
         System.out.println("Anja Majurec");
         System.out.println("Treći dan predavanja!");
         System.out.println("Četvrti dan predavanja!");
+        System.out.println("Peti dan predavanja!");
 
     }
 }
