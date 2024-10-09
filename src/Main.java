@@ -3,7 +3,7 @@
 public class Main {
     public static void main(String[] args) {
         System.out.println("Anja Majurec");
-        System.out.println("Drugi dan predavanja!");
+        System.out.println("Treći dan predavanja!");
 
     }
 }
