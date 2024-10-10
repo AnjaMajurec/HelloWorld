@@ -7,18 +7,18 @@ import java.util.Scanner;
 
                 Scanner scanner = new Scanner(System.in);
 
-                System.out.println("Pogađanje tajnog broja!");
+                System.out.println("Zbrajanje");
 
-                int tajniBroj = 7;
-                int pogodak;
+                int zbroj = 0;
+                int unos = 1;
 
-                do{
-                    System.out.println("Pogodi broj: ");
-                    pogodak = scanner.nextInt();
-
+                while (unos != 0){
+                    System.out.println("Unesi broj, za kraj programa unesi 0.");
+                    unos = scanner.nextInt();
+                    zbroj+=unos;
                 }
-                while (pogodak > tajniBroj || pogodak < tajniBroj);
-                System.out.println("Bravo, uspješno ste pogodili tajni broj 7.");
+
+                System.out.println("Zbroj prethodno unesenih brojeva je: " + zbroj);
 
             }
         }
