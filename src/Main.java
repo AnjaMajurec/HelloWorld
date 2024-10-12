@@ -7,18 +7,20 @@ import java.util.Scanner;
 
                 Scanner scanner = new Scanner(System.in);
 
-                //ZADATAK 1
-                //Napišite program koji će izračunati sumu svih brojeva od 1 do N, gdje je N pozitivan cijeli broj unesen od strane korisnika.
+                //Zadatak 2: Brojanje znamenki broja
+                //Napiši program koji prima cijeli broj od korisnika i  izračuna broj znamenki unesenog broja.
 
-                System.out.println("Unesite jedan cijeli broj: ");
-                int broj = scanner.nextInt();
-                int zbroj = 0;
+                System.out.println("Unesi jedan cijeli broj: ");
+                int unos = scanner.nextInt();
+                int brojac = 1;
+                int a = unos / 10;
+                while (a != 0) {
+                    brojac++;
+                    a = a / 10;
 
-                for (int i=1; i<(broj+1);i++){
-                    zbroj+=i;
-                }
-                System.out.println("Zbroj brojeva od 1 do " + broj + " iznosi " + zbroj + ".");
+                    }
 
+                System.out.println("Broj znamenki unesenog broja " + unos + " je " + brojac + ".");
 
 
             }
