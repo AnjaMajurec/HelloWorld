@@ -1,72 +1,72 @@
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
 public class Main {
 
+    //Od korisnika trazite unos 10 brojeva te u listi pronadite koji broj se najvise puta ponavlja.
+    //Za rezultat ispisite broj koji se najvise puta ponavljao u listi te koliko se puta pojavio u listi.
+    //Treba uzeti u obriz da su svi brojevi razliciti.
+
     public static void main(String[] args) {
-
-        //Napiši program koji od korisnika traži unos niza brojeva i sprema ih u List-u.
-        //Pronađi najmanji i najveći broj, zamijeni ih međusobno i ispiši novu List-u.
-
         Scanner scanner = new Scanner(System.in);
 
-        List <Integer> lista1 = new ArrayList <>();
-        List <Integer> lista2 = new ArrayList <>();
-        int unos;
-        int maxBroj = 0;
-        int minBroj;
+        List<Integer> lista1 = new ArrayList<>();
+        List<Integer> lista2 = new ArrayList<>();
 
+        int brojac;
+        int i;
 
-        System.out.println("Koliko brojeva ćete unesti u listu: ");
-        int broj = scanner.nextInt();
-
-        int i=0;
-        do {
-            System.out.println("Unesite element liste: ");
-            unos = scanner.nextInt();
+        for (i = 0; i < 10; i++) {
+            System.out.println("Unesite element " + (i + 1) + " liste: ");
+            int unos = scanner.nextInt();
             lista1.add(unos);
-            i++;
-        } while(i<broj);
+        }
 
-        minBroj = lista1.get(0);
+        for (i = 0; i < lista1.size(); i++) {
+            brojac = 0;
+            for (int j = 0; j < lista1.size(); j++) {
+                if (lista1.get(i).equals(lista1.get(j))) {
+                    brojac++;
+                }
+            }
+            lista2.add(brojac);
+        }
 
-        for (i=0; i < lista1.size(); i++){
-            if (lista1.get(i) > maxBroj){
-                maxBroj = lista1.get(i);
-            }
-            else if (lista1.get(i) < minBroj){
-                minBroj = lista1.get(i);
-            }
-        }
-        System.out.println("Lista brojeva koju je korisnik unio:");
-        for (i=0; i<lista1.size();i++){
-            System.out.println(lista1.get(i));
-        }
-        for (i=0;i<lista1.size();i++){
-            if (lista1.get(i)==maxBroj){
-                lista2.add(minBroj);
-            }
-            else if (lista1.get(i)==minBroj){
-                lista2.add(maxBroj);
-            }
-            else{
-                lista2.add(lista1.get(i));
+        int maxBroj = 0;
+
+
+        for (i = 0; i < lista2.size(); i++) {
+            if (lista2.get(i) > maxBroj) {
+                maxBroj = lista2.get(i);
             }
         }
-        System.out.println("Lista brojeva nakon što su pronađeni i međusobno zamijenjeni najveći i najmanji broj: ");
-        for (i=0; i<lista2.size();i++){
-            System.out.println(lista2.get(i));
+
+
+        List<Integer> maxBrojevi = new ArrayList<>();
+        for (i = 0; i < lista2.size(); i++) {
+            if (lista2.get(i) == maxBroj) {
+                if (!maxBrojevi.contains(lista1.get(i))) {
+                    maxBrojevi.add(lista1.get(i));
+                }
+            }
         }
+
+        if (maxBroj == 1) {
+            System.out.println("Svi brojevi su različiti!");
+        }
+
+        else if (maxBrojevi.size()!=1){
+            System.out.print("Brojevi koji se pojavljuju najviše puta (" + maxBroj + "): ");
+            for (int broj : maxBrojevi) {
+                System.out.print(broj + " ");
+            }
+            System.out.println();
+        }
+        else{
+            System.out.println("Broj koji se pojavljuje najviše puta (" + maxBroj + "): "+maxBrojevi.get(0));
+        }
+
+        scanner.close();
     }
 }
-
-
-
-
-
-
-
-
-
