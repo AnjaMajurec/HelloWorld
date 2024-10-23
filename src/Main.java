@@ -4,69 +4,34 @@ import java.util.ArrayList;
 
 public class Main {
 
-    //Od korisnika trazite unos 10 brojeva te u listi pronadite koji broj se najvise puta ponavlja.
-    //Za rezultat ispisite broj koji se najvise puta ponavljao u listi te koliko se puta pojavio u listi.
-    //Treba uzeti u obriz da su svi brojevi razliciti.
+    //Tražiti od korisnika da unese broj elemenata u listi te popuni elemente liste.
+    //Nakon toga pretražiti po listi da li postoji ijedan duplikat, ukoliko postoji ispisi vrijednost true, ukoliko ne postoji ispisi vrijednost false.
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        List<Integer> lista1 = new ArrayList<>();
-        List<Integer> lista2 = new ArrayList<>();
-
-        int brojac;
-        int i;
-
-        for (i = 0; i < 10; i++) {
-            System.out.println("Unesite element " + (i + 1) + " liste: ");
+        List<Integer> lista = new ArrayList<>();
+        System.out.println("Koliko elemenata želiš unijeti u listu? ");
+        int velicinaListe = scanner.nextInt();
+        for (int i = 0; i < velicinaListe; i++) {
+            System.out.println("Unesi " + (i + 1) + ". element liste: ");
             int unos = scanner.nextInt();
-            lista1.add(unos);
+            lista.add(unos);
         }
-
-        for (i = 0; i < lista1.size(); i++) {
-            brojac = 0;
-            for (int j = 0; j < lista1.size(); j++) {
-                if (lista1.get(i).equals(lista1.get(j))) {
+        System.out.println("U navedenoj listi postoji duplikat: " + provjera(lista));
+    }
+    private static Boolean provjera(List<Integer> lista){
+        for(int i=0;i<lista.size();i++){
+            int brojac=0;
+            for(int j=0;j<lista.size();j++){
+                if(lista.get(i).equals(lista.get(j))){
                     brojac++;
                 }
             }
-            lista2.add(brojac);
-        }
-
-        int maxBroj = 0;
-
-
-        for (i = 0; i < lista2.size(); i++) {
-            if (lista2.get(i) > maxBroj) {
-                maxBroj = lista2.get(i);
+            if(brojac>=2){
+                return true;
             }
         }
-
-
-        List<Integer> maxBrojevi = new ArrayList<>();
-        for (i = 0; i < lista2.size(); i++) {
-            if (lista2.get(i) == maxBroj) {
-                if (!maxBrojevi.contains(lista1.get(i))) {
-                    maxBrojevi.add(lista1.get(i));
-                }
-            }
-        }
-
-        if (maxBroj == 1) {
-            System.out.println("Svi brojevi su različiti!");
-        }
-
-        else if (maxBrojevi.size()!=1){
-            System.out.print("Brojevi koji se pojavljuju najviše puta (" + maxBroj + "): ");
-            for (int broj : maxBrojevi) {
-                System.out.print(broj + " ");
-            }
-            System.out.println();
-        }
-        else{
-            System.out.println("Broj koji se pojavljuje najviše puta (" + maxBroj + "): "+maxBrojevi.get(0));
-        }
-
-        scanner.close();
+        return false;
     }
 }
