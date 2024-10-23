@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-    //Tražiti od korisnika da unese broj elemenata u listi te popuni elemente liste.
-    //Nakon toga pretražiti po listi da li postoji ijedan duplikat, ukoliko postoji ispisi vrijednost true, ukoliko ne postoji ispisi vrijednost false.
+    //Napravi program koji će izračunati prosjek brojeva u listi, ali bez najmanjeg i najvećeg broja.
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -18,20 +17,27 @@ public class Main {
             int unos = scanner.nextInt();
             lista.add(unos);
         }
-        System.out.println("U navedenoj listi postoji duplikat: " + provjera(lista));
+        System.out.println("Prosjek je: " + prosjek(lista));
     }
-    private static Boolean provjera(List<Integer> lista){
-        for(int i=0;i<lista.size();i++){
-            int brojac=0;
-            for(int j=0;j<lista.size();j++){
-                if(lista.get(i).equals(lista.get(j))){
-                    brojac++;
-                }
+    private static Double prosjek(List<Integer> lista){
+        int maxBroj = 0;
+        int minBroj = lista.get(0);
+
+
+        for(int i=0;i<lista.size();i++) {
+            if (lista.get(i)>maxBroj){
+                maxBroj=lista.get(i);
             }
-            if(brojac>=2){
-                return true;
+            else if(lista.get(i)<minBroj){
+                minBroj=lista.get(i);
             }
+
         }
-        return false;
+        double zbroj=0;
+        for (int i=0;i<lista.size();i++){
+            zbroj+=lista.get(i);
+
+        }
+         return (zbroj-maxBroj-minBroj)/(lista.size()-2);
     }
 }
