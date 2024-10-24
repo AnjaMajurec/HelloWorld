@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 public class Main {
 
-    //Napravi program koji će izračunati prosjek brojeva u listi, ali bez najmanjeg i najvećeg broja.
+    // Napraviti funkciju koja provjerava da li je lista uzlazno sortirana.
+    // Prethodno, listu popunjava korisnik svojim unosom.
+    // Funkcija treba vratiti true/false.
+    // Na kraju programa korisniku ispisati da li je lista sortirana ili ne.
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -17,27 +20,17 @@ public class Main {
             int unos = scanner.nextInt();
             lista.add(unos);
         }
-        System.out.println("Prosjek je: " + prosjek(lista));
+        System.out.println("Navedena lista je sortirana: " + provjera(lista));
     }
-    private static Double prosjek(List<Integer> lista){
-        int maxBroj = 0;
-        int minBroj = lista.get(0);
-
-
-        for(int i=0;i<lista.size();i++) {
-            if (lista.get(i)>maxBroj){
-                maxBroj=lista.get(i);
+    private static Boolean provjera(List<Integer> lista){
+        for(int i=1;i<lista.size();i++){
+            if (lista.get(i-1)<=lista.get(i)){
+                continue;
             }
-            else if(lista.get(i)<minBroj){
-                minBroj=lista.get(i);
+            else{
+                return false;
             }
-
         }
-        double zbroj=0;
-        for (int i=0;i<lista.size();i++){
-            zbroj+=lista.get(i);
-
-        }
-         return (zbroj-maxBroj-minBroj)/(lista.size()-2);
+    return true;
     }
 }
