@@ -4,33 +4,58 @@ import java.util.ArrayList;
 
 public class Main {
 
-    // Napraviti funkciju koja provjerava da li je lista uzlazno sortirana.
-    // Prethodno, listu popunjava korisnik svojim unosom.
-    // Funkcija treba vratiti true/false.
-    // Na kraju programa korisniku ispisati da li je lista sortirana ili ne.
+    // Prvi zadatak
+    // Statistika riječi Napravi program koji učitava rečenicu i ispisuje:
+    // 1. Sve riječi duže od 5 slova, 2. Najdužu riječ, 3.Prosječnu duljinu riječi.
+
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Unesite željenu rečenicu: ");
+        String recenica = scanner.nextLine();
 
-        List<Integer> lista = new ArrayList<>();
-        System.out.println("Koliko elemenata želiš unijeti u listu? ");
-        int velicinaListe = scanner.nextInt();
-        for (int i = 0; i < velicinaListe; i++) {
-            System.out.println("Unesi " + (i + 1) + ". element liste: ");
-            int unos = scanner.nextInt();
-            lista.add(unos);
+        String[] rijeci = recenica.split(" ");
+
+        List<String> lista = new ArrayList<>();
+        for (String s : rijeci) {
+            lista.add(s);
         }
-        System.out.println("Navedena lista je sortirana: " + provjera(lista));
+        petSlova(lista);
+        najduzaRijec(lista);
+        System.out.println("Prosječna duljina riječi je: " + prosjecnaDuljinaRijeci(lista));
+
     }
-    private static Boolean provjera(List<Integer> lista){
-        for(int i=1;i<lista.size();i++){
-            if (lista.get(i-1)<=lista.get(i)){
-                continue;
-            }
-            else{
-                return false;
+    public static void petSlova(List<String> lista){
+        System.out.print("Riječi koje imaju više od 5 slova: ");
+        for(int i=0;i<lista.size();i++){
+            if(lista.get(i).length()>5){
+                System.out.print(lista.get(i)+" ");
             }
         }
-    return true;
+        System.out.println();
+    }
+    public static void najduzaRijec (List<String> lista){
+        String rijecMax=" ";
+        for(int i=0;i<lista.size();i++){
+            if(lista.get(i).length()>rijecMax.length()){
+                rijecMax=lista.get(i);
+            }
+        }
+        //ako imamo više riječi koje imaju isto slova ko najduža riječ
+        System.out.print("Najduža riječ je: ");
+        for(int i=0;i<lista.size();i++) {
+            if (lista.get(i).length() == rijecMax.length()) {
+                System.out.print(lista.get(i)+" ");
+            }
+        }
+        System.out.println();
+    }
+
+    public static Integer prosjecnaDuljinaRijeci (List<String> lista){
+        int ukupnaDuljina=0;
+        for(int i=0;i<lista.size();i++){
+            ukupnaDuljina+=lista.get(i).length();
+        }
+        return ukupnaDuljina/lista.size();
     }
 }
