@@ -3,20 +3,21 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Unesite koju količinu novca želite vratiti:");
-        double unos = scanner.nextDouble();
-        double[] apoeni = {500, 200, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.2, 0.1, 0.05, 0.02, 0.01};
-        vratiNovac(unos, apoeni);
-    }
 
-    public static void vratiNovac(double unos, double[] apoeni) {
-        System.out.print("Novčanice koje treba vratiti: ");
-        for (int i = 0; i < apoeni.length; i++) {
-            while (unos >= apoeni[i]) {
-                System.out.print(" "+apoeni[i]);
-                unos -= apoeni[i];
-            }
-        }
+        Polaznik polaznik1=new Polaznik("Anja", "Majurec");
+        Polaznik polaznik2=new Polaznik("Ivor", "Stojevski",27,"m");
+        Polaznik polaznik3=new Polaznik();
+
+        System.out.println("Polaznik 1. je: "+polaznik1.dohvatiIme()+" "+polaznik1.dohvatiPrezime());
+        polaznik2.promijeniDob(30);
+
+        System.out.println("Unesi ime trećeg polaznika: ");
+        String novoIme=scanner.nextLine();
+        polaznik3.dodajIme(novoIme);
+
+        System.out.println("Unesi prezime trećeg polaznika: ");
+        String novoPrezime=scanner.nextLine();
+        polaznik3.dodajPrezime(novoPrezime);
     }
 }
 
