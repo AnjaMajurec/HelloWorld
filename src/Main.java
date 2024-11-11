@@ -28,27 +28,24 @@ public class Main {
         System.out.println("Kako želite provesti transakciju: (1-kreditna kartica, 2-PayPal, 3-gotovina): ");
         int izbor= scanner.nextInt();
 
+        Placanje nacinPlacanja=null;
+
         if(izbor==1){
-            KreditnaKartica kreditnaKartica=new KreditnaKartica();
-            kreditnaKartica.platiti(iznos);
-            System.out.println(kreditnaKartica.getDetalje());
-            System.out.println("Iznos koji je plaćen je "+kreditnaKartica.vratiIznos()+" eura.");
+            nacinPlacanja=new KreditnaKartica();
         }
         else if(izbor==2){
-            PayPal PayPal=new PayPal();
-            PayPal.platiti(iznos);
-            System.out.println(PayPal.getDetalje());
-            System.out.println("Iznos koji je plaćen je "+PayPal.vratiIznos()+" eura.");
+            nacinPlacanja=new PayPal();
         }
         else if(izbor==3){
-            Gotovina gotovina=new Gotovina();
-            gotovina.platiti(iznos);
-            System.out.println(gotovina.getDetalje());
-            System.out.println("Iznos koji je plaćen je "+gotovina.vratiIznos()+" eura.");
+            nacinPlacanja=new Gotovina();
         }
         else{
             System.out.println("Neispravan unos");
         }
+        nacinPlacanja.platiti(iznos);
+        System.out.println(nacinPlacanja.getDetalje());
+        System.out.println("Iznos koji je plaćen je "+nacinPlacanja.vratiIznos()+" eura.");
+
 
     }
 
