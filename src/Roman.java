@@ -28,8 +28,7 @@ public class Roman implements Knjiga {
     }
 
     public void setGodinaIzdavanja(Integer godina) {
-        Integer trenutnaGodina = Year.now().getValue();
-        if (godina < 1900 && godina <= Year.now().getValue()) {
+        if (godina > 1900 && godina <= Year.now().getValue()) {
             this.godinaIzdavanja = godina;
         } else {
             System.out.println("Godina izdavanja knjige mora biti između 1900. godine i trenutne godine.");
