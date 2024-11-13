@@ -1,13 +1,13 @@
 import java.time.Year;
 
-public class AbstraktnaKlasaKnjiga implements Knjiga {
+public class abstractKnjiga implements Knjiga {
     private final String naslov;
     private final String autor;
     private String stanje;
     private Integer godinaIzdavanja;
     private Integer brojStranica;
 
-    public AbstraktnaKlasaKnjiga(String naslov, String autor, Integer godinaIzdavanja, Integer brojStranica) {
+    public abstractKnjiga(String naslov, String autor, Integer godinaIzdavanja, Integer brojStranica) {
         this.naslov = naslov;
         this.autor = autor;
         if (godinaIzdavanja > 1900 && godinaIzdavanja <= Year.now().getValue()) {
