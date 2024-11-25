@@ -1,72 +1,68 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        //Napravite program koji simulira sustav za upravljanje zaposlenicima u tvrtki. Svaki zaposlenik ima svoje podatke,
-        //a tvrtka vodi evidencij svih zaposlenika. Program treba omogućiti dodavanje zaposlenika, ispis svih zaposlenika i
-        //i pronalaženje zaposlenika s najvećom plaćom.
-
-        //Omogućite korisniku unos podataka o zaposlenicima.
-        //Korisite metode klase Tvrtka za dodavanje, ispis i pronalaženje najveće plaće. Pronađite zaposlenika s najvećom plaćom
-        // i ispisite njegove podatke.
-        // Program treba tražiti od korisnika unos podataka za barem 3 zaposlenika (ime, prezime, plaća). Korisite metodu
-        //ispisZaposlenika() za prikaz svih zaposlenika.
-        //Prikažite zaposlenika s najvećom plaćom pomoću metode pronadjiNajvecuPlacu().
-
-        //Drugi dio zadatka:
-        //Napravite vlastitu klasu za grešku ako korisnik unese praznu vrijednost za ime ili prezime.
-        //Napravite vlastitu klasu za pogrešku korisnika ukoliko se unese iznos place koji je manje ili jednak nuli.
+        //Napravite program za pracenje vozia u voznom parku. Program treba sadržavati:
+        //Apstraktnu klasu koja predstavlja osnovne podatke o vozilu(npr. marka, model, registracija).
+        //Apstraktna metoda koja vraća detaljan opis vozila.
+        //Dvije izvedene klase:
+        //Automobil(ima dodatne informacije poput broja sjedala i vrste goriva).
+        //Kamion(ima dodatne informacije poput nosivosti i prikolice.
+        //U glavnom dijelu treba biti:
+        //Stvoriti listu vozila u voznom parku(nekoliko automobila i kamiona).
+        //Implementirati metodu za pretraživanje vozila u listi prema registraciji.
+        //Ipisati sve podatke o pronađenom vozilu.
+        //Ako vozilo nije pronađeno ispisati poruku da ne postoji u sustavu.
+        //Dodati mogućnost ispisvanja svih vozila u voznom parku.
         Scanner scanner = new Scanner(System.in);
-        Tvrtka tvrtka = new Tvrtka("Končar");
-        while (true) {
-            String ime = "";
-            String prezime = "";
-            double placa = 0.00;
+        List<Vozilo> vozila=new ArrayList<>();
 
-            try {
-                System.out.println("Unesi ime zaposlenika: (ili 0 za kraj!)");
-                ime = scanner.nextLine();
-                if (ime.equals("0")) {
-                    System.out.println("Unos zaposlenika je završen.");
-                    break;
-                }
-                if (ime.isEmpty()) {
-                    throw new EmptyNameOrSurnameException("Ime ne može biti prazno!");
-                }
-                System.out.println("Unesi prezime zaposlenika: ");
-                prezime = scanner.nextLine();
-                if (prezime.isEmpty()) {
-                    throw new EmptyNameOrSurnameException("Prezime ne može biti prazno!");
-                }
-            } catch (EmptyNameOrSurnameException e) {
-                System.out.println(e.getMessage());
-                continue;
+        Auto auto1=new Auto("VW", "Polo","ZG5806HD",5,"benzin");
+        vozila.add(auto1);
+        Auto auto2=new Auto("Škoda", "Octavia","VT140AJ",5,"dizel");
+        vozila.add(auto2);
+
+        Kamion kamion1=new Kamion("Mercedes", "Actros","ZG3241AS", 430.00,"da");
+        vozila.add(kamion1);
+        Kamion kamion2=new Kamion("Volvo", "Atego", "VT003S",200.00,"ne");
+        vozila.add(kamion2);
+        while(true){
+            System.out.println("Za pretraživanje vozila po registraciji upišite 1, a za ispis svih vozila u voznom parku 2, za izlaz 0 ");
+            int odabir= scanner.nextInt();
+            scanner.nextLine();
+
+            if (odabir==0){
+                System.out.println("Izašli ste iz voznog parka.");
+                break;
             }
-            boolean validSalary = false;
-            while (!validSalary) {
-                try {
-                    System.out.println("Unesi plaću zaposlenika: ");
-                    placa = scanner.nextDouble();
-                    scanner.nextLine();
+            else if(odabir==1){
+                System.out.println("Unesi registraciju vozila čije podatke želiš: ");
+                String registracijaKorisnik= scanner.nextLine();
+                Vozilo vozilo=pretraziVoziloPoRegistraciji(vozila, registracijaKorisnik);
+                if(vozilo==null){
+                    System.out.println("U bazi ne postoji vozilo s tom registracijom.");
+                }
+                else{
+                    vozilo.detaljanOpisVozila();
+                }
 
-                    if (placa <= 0) {
-                        if (placa == 0) {
-                            throw new InvalidSalaryException("Plaća ne može biti 0!");
-                        } else {
-                            throw new InvalidSalaryException("Plaća mora biti veća od nule!");
-                        }
-                    }
-                    validSalary = true;
-                } catch (InvalidSalaryException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("Unesite ispravan broj za plaću.");
+            }
+            else{
+                for (Vozilo vozilo : vozila) {
+                    vozilo.detaljanOpisVozila();
                 }
             }
-
-            Zaposlenik zaposlenik = new Zaposlenik(ime, prezime, placa);
-            tvrtka.dodajZaposlenika(zaposlenik);
         }
-        tvrtka.ispisiZaposlenike();
-        System.out.println("Zaposlenik " + tvrtka.pronadjiNajvecuPlacu().getIme() + " " + tvrtka.pronadjiNajvecuPlacu().getPrezime() + " ima najveću plaću: " + tvrtka.pronadjiNajvecuPlacu().getPlaca() + " eura.");
+
+    }
+    public static Vozilo pretraziVoziloPoRegistraciji(List<Vozilo> vozila, String registracijaKorisnik) {
+        for (Vozilo vozilo : vozila) {
+            if (vozilo.getRegistracijaVozila().equals(registracijaKorisnik)) {
+                return vozilo;
+            }
+        }
+        return null;
     }
 }
