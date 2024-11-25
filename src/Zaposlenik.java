@@ -1,37 +1,31 @@
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+//Napravite klasu Zaposlenik koja sadrži sljedeće podatke: ime(tipa String)-ime zaposlenika, prezime(tipa String)-prezime zaposlenika,
+//placa(tipa double), napravite konstruktor za inicijalizaciju svih atributa. Napravite metodu toString() za formatirani ispis informacija
+//o zaposleniku.
 
-public abstract class Zaposlenik {
+public class Zaposlenik {
     private final String ime;
-    private final Integer brojRadnihSati;
-    private BigDecimal osnovnaPlaca;
+    private final String prezime;
+    private double placa;
 
-    public Zaposlenik(String ime, BigDecimal osnovnaPlaca, Integer brojRadnihSati) {
+    public Zaposlenik(String ime, String prezime, double placa) {
         this.ime = ime;
-        this.osnovnaPlaca = osnovnaPlaca;
-        this.brojRadnihSati = brojRadnihSati;
+        this.prezime=prezime;
+        this.placa=placa;
     }
 
     public String getIme() {
         return this.ime;
     }
-
-    public BigDecimal getOsnovnaPlaca() {
-        return osnovnaPlaca;
+    public String getPrezime(){
+        return this.prezime;
     }
-
-    public void setOsnovnaPlaca(BigDecimal osnovnaPlaca) {
-        this.osnovnaPlaca = osnovnaPlaca;
+    public double getPlaca(){
+        return this.placa;
     }
-
-    public Integer getBrojRadnihSati() {
-        return brojRadnihSati;
+    public void setPlaca(double placa){
+        this.placa=placa;
     }
-
-    public abstract BigDecimal izracunPlace();
-
-    public void ispisPodataka() {
-        System.out.println("Ime: " + ime + ", osnovna plaća: " + osnovnaPlaca.setScale(2, RoundingMode.HALF_UP) + ", broj radnih sati: " + brojRadnihSati + ", ukupna plaća: " + izracunPlace().setScale(2, RoundingMode.HALF_UP) + ".");
-
+    public String toString() {
+        return "Zaposlenik, ime: "+this.ime+", prezime: "+this.prezime+", plaća: "+this.placa;
     }
 }
