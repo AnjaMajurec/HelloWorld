@@ -1,23 +1,36 @@
 public abstract class Vozilo {
+    private String registarskiBrojVozila;
     private String markaVozila;
-    private String modelVozila;
-    private String registracijaVozila;
+    private Integer godinaProizvodnjeVozila;
 
-    public Vozilo(String markaVozila, String modelVozila, String registracijaVozila){
+    public Vozilo(String registarskiBrojVozila, String markaVozila, Integer godinaProizvodnjeVozila) throws NeispravniPodaciException {
+        if (godinaProizvodnjeVozila<=0){
+            throw new NeispravniPodaciException("Godina proizvodnje ne može biti manja ili jednaka nuli.");
+        }
+        this.registarskiBrojVozila=registarskiBrojVozila;
         this.markaVozila=markaVozila;
-        this.modelVozila=modelVozila;
-        this.registracijaVozila=registracijaVozila;
+        this.godinaProizvodnjeVozila=godinaProizvodnjeVozila;
     }
-    public void detaljanOpisVozila(){
+    public abstract String prikaziPodatke();
+
+    public String getRegistarskiBrojVozila(){
+        return registarskiBrojVozila;
     }
     public String getMarkaVozila(){
         return markaVozila;
     }
-    public String getModelVozila(){
-        return modelVozila;
+    public Integer getGodinaProizvodnjeVozila(){
+        return godinaProizvodnjeVozila;
     }
-    public String getRegistracijaVozila(){
-        return registracijaVozila;
+    public void setRegistarskiBrojVozila(String registarskiBrojVozila){
+        this.registarskiBrojVozila=registarskiBrojVozila;
     }
 
+    public void setMarkaVozila(String markaVozila) {
+        this.markaVozila = markaVozila;
+    }
+
+    public void setGodinaProizvodnjeVozila(Integer godinaProizvodnjeVozila) {
+        this.godinaProizvodnjeVozila = godinaProizvodnjeVozila;
+    }
 }

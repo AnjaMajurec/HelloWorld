@@ -1,0 +1,4 @@
+ZG5806HD, VW, 2019, 4
+VT140AJ, Škoda, 2009, 5
+ZG123A, BMW, 2024, jednocilindrični
+VT321S, Honda, 2011, V-twin
