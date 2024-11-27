@@ -77,11 +77,14 @@ public class Main {
                 case 2:
                     vracanje(knjiznica,korisnik,scanner);
                     break;
+                case 3:
+                    System.out.println("Izašli ste iz knjižnice.");
+                    break;
                 default:
                     System.out.println("Neispravan unos, pokušajte ponovno.");
 
             }
-        } while (izbor != 4);
+        } while (izbor != 3);
         knjiznica.spremiPodatkeUDatoteku();
 
     }
