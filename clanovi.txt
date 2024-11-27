@@ -1,0 +1,2 @@
+Ime: Anja, prezime: Majurec, članski broj: 123, posuđene knjige: 
+Ime: Iva, prezime: Foret, članski broj: 321, posuđene knjige: Potresi, autor: Hrvoje Tkalčić, ID: 5432, ,
