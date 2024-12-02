@@ -4,28 +4,29 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        //1. Brojanje parnih i neparnih brojeva
-        //Napravite program koji traži od korisnika unos 10 cijelih brojeva. Spremite te brojeve u listu i zatim:
-        //Prebrojite koliko je parnih, a koliko neparnih brojeva.
-        //Ispišite rezultate.
+        //2. Najveći i najmanji broj
+        //Napravite program koji traži od korisnika unos 15 decimalnih brojeva (tip double) i sprema ih u listu. Zatim pronađite i ispišite:
+        //Najveći broj,
+        //Najmanji broj.
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Unesi 10 cijelih brojeva:");
-        List<Integer> cijeliBrojevi=new ArrayList<>();
-        int parniBrojevi=0;
-        int neparniBrojevi=0;
-        for(int i =0;i<10;i++){
-            System.out.println("Unesi "+(i+1)+". broj: ");
-            cijeliBrojevi.add(scanner.nextInt());
-        }
-        for (Integer i : cijeliBrojevi) {
-            if(i%2==0){
-                parniBrojevi++;
-            }
-            else{
-                neparniBrojevi++;
-            }
+        System.out.println("Unesi 15 decimalnih brojeva:");
+        List<Double> decimalniBrojevi=new ArrayList<>();
 
+        for(int i =0;i<15;i++){
+            System.out.println("Unesi "+(i+1)+". broj: ");
+            decimalniBrojevi.add(scanner.nextDouble());
         }
-        System.out.println("Parnih brojeva je: "+parniBrojevi+", a neparnih brojeva: "+neparniBrojevi);
+        double najmanjiBroj=decimalniBrojevi.get(0);
+        double najveciBroj=decimalniBrojevi.get(0);
+
+        for (Double i : decimalniBrojevi) {
+            if(i<najmanjiBroj){
+                najmanjiBroj=i;
+            }
+            else if(i>najveciBroj){
+                najveciBroj=i;
+            }
+        }
+        System.out.println("Najmanji broj je: "+najmanjiBroj+", a nejveći broj je: "+najveciBroj);
     }
 }
