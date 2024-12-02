@@ -4,29 +4,35 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        //3. Zbrajanje pozitivnih i negativnih brojeva
-        //Korisnik unosi 20 cijelih brojeva. Spremite ih u listu i:
-        //Zbrojite sve pozitivne brojeve,
-        //Zbrojite sve negativne brojeve,
-        //Ispišite oba rezultata.
+        //4. Popis knjiga
+        //Napravite klasu Knjiga koja ima sljedeće atribute:
+        //Naslov, autor i godina izdanja.
+        //Napravite listu knjiga i dodajte nekoliko knjiga ručno. Zatim implementirajte metodu koja:
+        //Ispisuje sve knjige autora kojeg unese korisnik.
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Unesi 20 cijelih brojeva:");
-        List<Integer> cijeliBrojevi=new ArrayList<>();
+        List<Knjiga> knjige = new ArrayList<>();
+        Knjiga knjiga1 = new Knjiga("Okus: Toskana", "Stanley Tucci", "2018");
+        knjige.add(knjiga1);
+        Knjiga knjiga2 = new Knjiga("Okus: Sicilija", "Stanley Tucci", "2019");
+        knjige.add(knjiga2);
+        Knjiga knjiga3 = new Knjiga("Potresi", "Hrvoje Tkalčić", "2020");
+        knjige.add(knjiga3);
 
-        for(int i =0;i<20;i++){
-            System.out.println("Unesi "+(i+1)+". broj: ");
-            cijeliBrojevi.add(scanner.nextInt());
-        }
-        Integer zbrojPozitivnihBrojeva=0;
-        Integer zbrojNegativnihBrojeva=0;
+        System.out.println("Upisite ime autora cije knjige želite ispisati: ");
+        String unos = scanner.nextLine();
+        ispisKnjigaUnesenogAutora(knjige,unos);
 
-        for (Integer i : cijeliBrojevi) {
-            if(i<0){
-                zbrojNegativnihBrojeva+=i;            }
-            else{
-                zbrojPozitivnihBrojeva+=i;
-            }
-        }
-        System.out.println("Zbroj pozitivnih brojeva je: "+zbrojPozitivnihBrojeva+", a zbroj negativnih brojeva je: "+zbrojNegativnihBrojeva);
     }
+        public static void ispisKnjigaUnesenogAutora(List <Knjiga> knjige, String unos){
+                boolean postojiKnjiga=false;
+                for(Knjiga knjiga:knjige){
+                    if(knjiga.getAutor().equalsIgnoreCase(unos)){
+                        System.out.println(knjiga.toString());
+                        postojiKnjiga=true;
+                    }
+                }
+                if(!postojiKnjiga){
+                    System.out.println("Ne postoji ni jedna knjiga unesenog autora.");
+                }
+        }
 }

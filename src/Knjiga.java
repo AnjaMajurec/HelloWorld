@@ -1,12 +1,12 @@
 public class Knjiga {
     private String naziv;
     private String autor;
-    private String IDknjiga;
+    private String godinaIzdanja;
 
-    public Knjiga(String naziv, String autor, String IDknjiga){
+    public Knjiga(String naziv, String autor, String godinaIzdanja){
         this.naziv=naziv;
         this.autor=autor;
-        this.IDknjiga=IDknjiga;
+        this.godinaIzdanja=godinaIzdanja;
     }
     public String getNaziv(){
         return naziv;
@@ -14,10 +14,10 @@ public class Knjiga {
     public String getAutor(){
         return autor;
     }
-    public String getIDknjiga(){
-        return IDknjiga;
+    public String getGodinaIzdanja(){
+        return godinaIzdanja;
     }
     public String toString(){
-        return naziv+", autor: "+autor+", ID: "+IDknjiga+", ";
+        return naziv+", autor: "+autor+", ID: "+godinaIzdanja+", ";
     }
 }
