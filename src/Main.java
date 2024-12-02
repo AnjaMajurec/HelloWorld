@@ -4,29 +4,29 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        //2. Najveći i najmanji broj
-        //Napravite program koji traži od korisnika unos 15 decimalnih brojeva (tip double) i sprema ih u listu. Zatim pronađite i ispišite:
-        //Najveći broj,
-        //Najmanji broj.
+        //3. Zbrajanje pozitivnih i negativnih brojeva
+        //Korisnik unosi 20 cijelih brojeva. Spremite ih u listu i:
+        //Zbrojite sve pozitivne brojeve,
+        //Zbrojite sve negativne brojeve,
+        //Ispišite oba rezultata.
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Unesi 15 decimalnih brojeva:");
-        List<Double> decimalniBrojevi=new ArrayList<>();
+        System.out.println("Unesi 20 cijelih brojeva:");
+        List<Integer> cijeliBrojevi=new ArrayList<>();
 
-        for(int i =0;i<15;i++){
+        for(int i =0;i<20;i++){
             System.out.println("Unesi "+(i+1)+". broj: ");
-            decimalniBrojevi.add(scanner.nextDouble());
+            cijeliBrojevi.add(scanner.nextInt());
         }
-        double najmanjiBroj=decimalniBrojevi.get(0);
-        double najveciBroj=decimalniBrojevi.get(0);
+        Integer zbrojPozitivnihBrojeva=0;
+        Integer zbrojNegativnihBrojeva=0;
 
-        for (Double i : decimalniBrojevi) {
-            if(i<najmanjiBroj){
-                najmanjiBroj=i;
-            }
-            else if(i>najveciBroj){
-                najveciBroj=i;
+        for (Integer i : cijeliBrojevi) {
+            if(i<0){
+                zbrojNegativnihBrojeva+=i;            }
+            else{
+                zbrojPozitivnihBrojeva+=i;
             }
         }
-        System.out.println("Najmanji broj je: "+najmanjiBroj+", a nejveći broj je: "+najveciBroj);
+        System.out.println("Zbroj pozitivnih brojeva je: "+zbrojPozitivnihBrojeva+", a zbroj negativnih brojeva je: "+zbrojNegativnihBrojeva);
     }
 }
