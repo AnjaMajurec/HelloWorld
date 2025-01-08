@@ -1,30 +1,82 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.HashSet;
+import java.util.TreeSet;
 
 public class Main {
     public static void main(String[] args) {
-        //5. Popis studenata
-        //Napravite klasu Student s atributima:
-        //Ime, prezime i prosjek ocjena.
-        //Stvorite listu studenata i dodajte nekoliko objekata u listu. Zatim:
-        //Pronađite i ispišite podatke o studentu s najvećim prosjekom.
-        Scanner scanner = new Scanner(System.in);
-        List <Student> studenti=new ArrayList<>();
-        studenti.add(new Student("Anja","Majurec",4.56));
-        studenti.add(new Student("Iva","Foret",3.45));
-        studenti.add(new Student("Lara","Mandić",4.9));
-        studentSNajvecimProsjekom(studenti);
-        
-    }
-    public static void studentSNajvecimProsjekom(List<Student> studenti){
-        Student najboljiStudent=studenti.get(0);
-        for (Student student : studenti) {
-            if(student.getProsjekOcjena()>najboljiStudent.getProsjekOcjena()){
-                najboljiStudent=student;
 
-            }
+
+        //ZADATAK 1
+        System.out.println("+++++ZADATAK 1+++++");
+        HashSet<String> studenti = new HashSet<>();
+
+        studenti.add("Anja");
+        studenti.add("Mirta");
+        studenti.add("Lara");
+        studenti.add("Ivor");
+
+        if (studenti.contains("Mirta")) {
+            System.out.println("HashSet sadrži studenta pod imenom Mirta.");
+        } else {
+            System.out.println("HashSet NE sadrži studenta pod imenom Mirta.");
         }
-        System.out.println("Student s najvećim prosjekom: " + najboljiStudent.getIme()+" "+najboljiStudent.getPrezime()+", prosjek: "+najboljiStudent.getProsjekOcjena());
+
+        for (String student : studenti) {
+            System.out.println("HashSet: " + student);
+        }
+
+        studenti.remove("Anja");
+
+        System.out.println("+++++NAKON BRISANJA+++++");
+        for (String student : studenti) {
+            System.out.println("HashSet: " + student);
+        }
+        System.out.println("+++++ZADATAK 2+++++");
+
+        TreeSet<String> gradovi = new TreeSet<>();
+
+        gradovi.add("Zagreb");
+        gradovi.add("Osijek");
+        gradovi.add("Rijeka");
+        gradovi.add("Split");
+        gradovi.add("Makarska");
+
+        System.out.println("Elementi u TreeSet-u su: " + gradovi);
+
+        System.out.println("Prvi element u TreeSet-u je: " + gradovi.first());
+        System.out.println("Zadnji element u TreeSet-u je: " + gradovi.last());
+
+        gradovi.remove("Rijeka");
+
+        System.out.println("+++++NAKON BRISANJA+++++");
+        System.out.println("Elementi u TreeSet-u su: " + gradovi);
+
+        System.out.println("+++++ZADATAK 3+++++");
+
+        HashSet<String> odjelA = new HashSet<>();
+
+        odjelA.add("Anja");
+        odjelA.add("Mirta");
+        odjelA.add("Lara");
+        odjelA.add("Ivor");
+
+        HashSet<String> odjelB = new HashSet<>();
+
+        odjelB.add("Lovro");
+        odjelB.add("Ivana");
+        odjelB.add("Lara");
+        odjelB.add("Anja");
+
+        HashSet<String> unija = new HashSet<>(odjelA);
+        unija.addAll(odjelB);
+        System.out.println("Unija: " + unija);
+
+        HashSet<String> presjek = new HashSet<>(odjelA);
+        presjek.retainAll(odjelB);
+        System.out.println("Presjek: " + presjek);
+
+        HashSet<String> razlika = new HashSet<>(odjelA);
+        razlika.removeAll(odjelB);
+        System.out.println("Razlika (odjelA - odjelB): " + razlika);
+        }
     }
-}
+
