@@ -1,82 +1,43 @@
-import java.util.HashSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
 
+        List<Polaznik> sviPolaznici = new ArrayList<>();
 
-        //ZADATAK 1
-        System.out.println("+++++ZADATAK 1+++++");
-        HashSet<String> studenti = new HashSet<>();
+        HashMap<String, Polaznik> polazniciProvjeraPoEmailu = new HashMap<>();
 
-        studenti.add("Anja");
-        studenti.add("Mirta");
-        studenti.add("Lara");
-        studenti.add("Ivor");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Koliko polaznika želite unijeti: ");
+        int brojPolaznika = scanner.nextInt();
+        scanner.nextLine();
 
-        if (studenti.contains("Mirta")) {
-            System.out.println("HashSet sadrži studenta pod imenom Mirta.");
-        } else {
-            System.out.println("HashSet NE sadrži studenta pod imenom Mirta.");
+
+        for (int i = 0; i < brojPolaznika; i++) {
+            String ime, prezime, email;
+
+
+            while(true) {
+                System.out.println("Unesite ime "+(i+1)+". polaznika: ");
+                ime = scanner.nextLine();
+                System.out.println("Unesite prezime "+(i+1)+". polaznika: ");
+                prezime = scanner.nextLine();
+                System.out.println("Unesite email  "+(i+1)+". polaznika: ");
+                email = scanner.nextLine();
+                if (polazniciProvjeraPoEmailu.containsKey(email)) {
+                    System.out.println("Polaznik sa ovom email adresom već postoji!");
+                }
+                else {
+                    break;
+                }
+            }
+             Polaznik polaznik=new Polaznik(ime,prezime,email);
+             sviPolaznici.add(polaznik);
+             polazniciProvjeraPoEmailu.put(email, polaznik);
+
         }
-
-        for (String student : studenti) {
-            System.out.println("HashSet: " + student);
-        }
-
-        studenti.remove("Anja");
-
-        System.out.println("+++++NAKON BRISANJA+++++");
-        for (String student : studenti) {
-            System.out.println("HashSet: " + student);
-        }
-        System.out.println("+++++ZADATAK 2+++++");
-
-        TreeSet<String> gradovi = new TreeSet<>();
-
-        gradovi.add("Zagreb");
-        gradovi.add("Osijek");
-        gradovi.add("Rijeka");
-        gradovi.add("Split");
-        gradovi.add("Makarska");
-
-        System.out.println("Elementi u TreeSet-u su: " + gradovi);
-
-        System.out.println("Prvi element u TreeSet-u je: " + gradovi.first());
-        System.out.println("Zadnji element u TreeSet-u je: " + gradovi.last());
-
-        gradovi.remove("Rijeka");
-
-        System.out.println("+++++NAKON BRISANJA+++++");
-        System.out.println("Elementi u TreeSet-u su: " + gradovi);
-
-        System.out.println("+++++ZADATAK 3+++++");
-
-        HashSet<String> odjelA = new HashSet<>();
-
-        odjelA.add("Anja");
-        odjelA.add("Mirta");
-        odjelA.add("Lara");
-        odjelA.add("Ivor");
-
-        HashSet<String> odjelB = new HashSet<>();
-
-        odjelB.add("Lovro");
-        odjelB.add("Ivana");
-        odjelB.add("Lara");
-        odjelB.add("Anja");
-
-        HashSet<String> unija = new HashSet<>(odjelA);
-        unija.addAll(odjelB);
-        System.out.println("Unija: " + unija);
-
-        HashSet<String> presjek = new HashSet<>(odjelA);
-        presjek.retainAll(odjelB);
-        System.out.println("Presjek: " + presjek);
-
-        HashSet<String> razlika = new HashSet<>(odjelA);
-        razlika.removeAll(odjelB);
-        System.out.println("Razlika (odjelA - odjelB): " + razlika);
-        }
+        System.out.println(sviPolaznici.toString());
     }
+}
+
 
