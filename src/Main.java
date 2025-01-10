@@ -3,41 +3,25 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        List<Polaznik> sviPolaznici = new ArrayList<>();
-
-        HashMap<String, Polaznik> polazniciProvjeraPoEmailu = new HashMap<>();
+        HashMap<String, Integer> rijecBrojPonavljanja = new HashMap<>();
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Koliko polaznika želite unijeti: ");
-        int brojPolaznika = scanner.nextInt();
-        scanner.nextLine();
+        System.out.println("Unesite rečenicu: ");
+        String recenica = scanner.nextLine();
 
-
-        for (int i = 0; i < brojPolaznika; i++) {
-            String ime, prezime, email;
-
-
-            while(true) {
-                System.out.println("Unesite ime "+(i+1)+". polaznika: ");
-                ime = scanner.nextLine();
-                System.out.println("Unesite prezime "+(i+1)+". polaznika: ");
-                prezime = scanner.nextLine();
-                System.out.println("Unesite email  "+(i+1)+". polaznika: ");
-                email = scanner.nextLine();
-                if (polazniciProvjeraPoEmailu.containsKey(email)) {
-                    System.out.println("Polaznik sa ovom email adresom već postoji!");
-                }
-                else {
-                    break;
-                }
-            }
-             Polaznik polaznik=new Polaznik(ime,prezime,email);
-             sviPolaznici.add(polaznik);
-             polazniciProvjeraPoEmailu.put(email, polaznik);
-
+        String[] rijeci = recenica.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+        for (String rijec : rijeci) {
+            rijecBrojPonavljanja.put(rijec, rijecBrojPonavljanja.getOrDefault(rijec,0)+1);
         }
-        System.out.println(sviPolaznici.toString());
+
+        System.out.println("Broj ponavljanja svake riječi: ");
+        System.out.println(rijecBrojPonavljanja);
     }
 }
+
+
+
+
+
 
 
