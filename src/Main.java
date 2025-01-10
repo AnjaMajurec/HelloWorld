@@ -3,9 +3,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        HashMap<String, Integer> rijecBrojPonavljanja = new HashMap<>();
         HashSet<String> jedinstveniBrojevi = new HashSet<>();
-
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Unesite brojeve odvojene zarezom: ");
