@@ -1,37 +1,24 @@
 import database.DatabaseService;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main{
     public static void main(String[] args) throws SQLException{
         Connection connection= DatabaseService.createConnection();
-        unos5Osoba(connection);
+        povezivanjeSProceduromZaAzuriranjePrezimena(connection,1,"novoPrezime");
         connection.close();
     }
-    public static void unos5Osoba(Connection connection) throws SQLException{
-        List<Osoba> osobe=new ArrayList<>();
-        osobe.add(new Osoba("Anja","Majurec","1998-07-27"));
-        osobe.add(new Osoba("Ivor","Stojevski","1998-03-13"));
-        osobe.add(new Osoba("Iva","Foret","1998-04-26"));
-        osobe.add(new Osoba("Lara","Mandić","1998-08-19"));
-        osobe.add(new Osoba("Karlo","Boos","1995-05-09"));
+    public static void povezivanjeSProceduromZaAzuriranjePrezimena(Connection connection, int osobaID, String novoPrezime) throws SQLException{
+        String callProcedure="{CALL AzurirajPrezime(?,?)}";
+        CallableStatement callableStatement= connection.prepareCall(callProcedure);
 
-        String query="INSERT INTO Osoba(Ime, Prezime, DatumRodenja) VALUES (?,?,?)";
-        PreparedStatement preparedStatement= connection.prepareStatement(query);
+        callableStatement.setInt(1,osobaID);
+        callableStatement.setString(2,novoPrezime);
 
-        for (Osoba osoba : osobe) {
-            preparedStatement.setString(1,osoba.getIme());
-            preparedStatement.setString(2,osoba.getPrezime());
-            preparedStatement.setString(3,osoba.getDatumRodenja());
-
-            preparedStatement.executeUpdate();
-            System.out.println("Osoba "+osoba.getIme()+" "+osoba.getPrezime()+" dodana je u tablicu.");
-
-        }
-        preparedStatement.close();
-
+        callableStatement.execute();
+        System.out.println("Osoba s ID-jem: "+osobaID+" promijenila je prezime na: "+novoPrezime);
+        callableStatement.close();
     }
 }
 
