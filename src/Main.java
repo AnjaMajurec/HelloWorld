@@ -6,18 +6,17 @@ import java.util.List;
 public class Main{
     public static void main(String[] args) throws SQLException{
         Connection connection= DatabaseService.createConnection();
-        povezivanjeSProceduromZaAzuriranjePrezimena(connection,1,"novoPrezime");
+        ObrisiOsobePoDatumuRodenja(connection,"1998-07-27");
         connection.close();
     }
-    public static void povezivanjeSProceduromZaAzuriranjePrezimena(Connection connection, int osobaID, String novoPrezime) throws SQLException{
-        String callProcedure="{CALL AzurirajPrezime(?,?)}";
+    public static void ObrisiOsobePoDatumuRodenja(Connection connection, String minDatumRodenja) throws SQLException{
+        String callProcedure="{CALL ObrisiPoDatumuRodenja(?)}";
         CallableStatement callableStatement= connection.prepareCall(callProcedure);
 
-        callableStatement.setInt(1,osobaID);
-        callableStatement.setString(2,novoPrezime);
+        callableStatement.setString(1,minDatumRodenja);
 
         callableStatement.execute();
-        System.out.println("Osoba s ID-jem: "+osobaID+" promijenila je prezime na: "+novoPrezime);
+        System.out.println("Uspješno su obrisane sve osobe s datum rođenja prije: "+minDatumRodenja);
         callableStatement.close();
     }
 }
