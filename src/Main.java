@@ -7,13 +7,12 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("IZBORNIK: 1 - Unesi novog učenika");
-            System.out.println("2 - Unos novog razreda");
-            System.out.println("3 - Prebacivanje učenika u drugi razred");
-            System.out.println("4 - Ispis učenika iz pojedinog razreda");
-            System.out.println("5 - Brisanje učenika");
-            System.out.println("6 - Update imena i prezimena nastavnika");
-            System.out.println("7 - Kraj");
+            System.out.println("IZBORNIK: 1 - Unesi novog polaznika");
+            System.out.println("2 - Unos novog programa obrazovanja");
+            System.out.println("3 - Upiši polaznika na program obrazovanja");
+            System.out.println("4 - Prebaci polaznika iz jednog u drugi program obrazovanja");
+            System.out.println("5 - Ispis polaznika određenog programa obradovanja (po ID-ju)");
+            System.out.println("6 - Kraj");
             System.out.println("Molim Vas izaberite jednu od ponuđenih opcija: ");
 
             int unos = scanner.nextInt();
@@ -21,29 +20,26 @@ public class Main {
 
             switch (unos) {
                 case 1:
-                    unosNovogUcenika(scanner);
+                    unosNovogPolaznika(scanner);
                     break;
 
                 case 2:
-                    unosNovogRazreda(scanner);
+                    unosNovogProgramaObrazovanja(scanner);
                     break;
 
                 case 3:
-                    prebacivanjeUcenikaUNoviRazred(scanner);
+                    upisPolaznikaNaProgramObrazovanja(scanner);
                     break;
 
                 case 4:
-                    ispisSvihUcenikaURazredu(scanner);
+                    prebacivanjePolaznikaNaDrugiProgramObrazovanja(scanner);
                     break;
 
                 case 5:
-                    brisanjeUcenika(scanner);
+                    ispisPolaznikaUProgramuObrazovanja(scanner);
                     break;
 
                 case 6:
-                    updateImenaPrezimenaNastavnika(scanner);
-
-                case 7:
                     System.out.println("Izašli ste iz aplikacije.");
                     return;
 
@@ -53,198 +49,231 @@ public class Main {
         }
     }
 
-    private static void unosNovogUcenika(Scanner scanner) {
+    private static void unosNovogPolaznika(Scanner scanner) {
 
-        System.out.println("Unesite ime ucenika: ");
+        System.out.println("Unesite ime polaznika: ");
         String ime = scanner.nextLine();
-        System.out.println("Unesite prezime ucenika: ");
+        System.out.println("Unesite prezime polaznika: ");
         String prezime = scanner.nextLine();
-        System.out.println("Unesite ID razreda u koji upisujete učenika (ili unesite 0 za povratak u glavni izbornik s odabirom unosa novog razreda): ");
-        String query = "SELECT * FROM Razred";
+
+        try (Connection connection = DatabaseService.createConnection()) {
+            String callProcedure = "{CALL UnosPolaznika(?,?)}";
+            CallableStatement callableStatement = connection.prepareCall(callProcedure);
+
+            callableStatement.setString(1, ime);
+            callableStatement.setString(2, prezime);
+
+            callableStatement.execute();
+            System.out.println();
+            callableStatement.close();
+
+            System.out.println("Polaznik " + ime + " " + prezime + " je uspješno unesen u bazu.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private static void unosNovogProgramaObrazovanja(Scanner scanner) {
+        System.out.println("Unesite naziv novog programa obrazovanja: ");
+        String naziv = scanner.nextLine();
+        System.out.println("Unesite broj CSVET bodova: ");
+        int csvet = scanner.nextInt();
+
+        try (Connection connection = DatabaseService.createConnection()) {
+            String query = "INSERT INTO ProgramObrazovanja (Naziv, CSVET) VALUES (?,?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, naziv);
+            statement.setInt(2, csvet);
+
+            int result = statement.executeUpdate();
+            System.out.println("Program obrazovanja " + naziv + " je uspješno unesen u bazu.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void upisPolaznikaNaProgramObrazovanja(Scanner scanner) {
+        System.out.println("Unesite ID polaznika kojeg želite upisati: ");
+        String query1 = "SELECT * FROM Polaznik";
 
         try (Connection connection = DatabaseService.createConnection();
-             PreparedStatement statement = connection.prepareStatement(query);
+             PreparedStatement statement = connection.prepareStatement(query1);
              ResultSet resultSet = statement.executeQuery()) {
 
-            while(resultSet.next()) {
-                int idRazred = resultSet.getInt("Id");
+            while (resultSet.next()) {
+                int idPolaznik = resultSet.getInt("PolaznikID");
+                String Ime = resultSet.getString("Ime");
+                String Prezime = resultSet.getString("Prezime");
+                System.out.println("Ime: " + Ime + ", Prezime: " + Prezime + ", Polaznik ID: " + idPolaznik);
+            }
+            ;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        int polaznikID = scanner.nextInt();
+
+        System.out.println("Unesite ID programa obrazovanja na koji želite upisati navedenog polaznika: ");
+        String query2 = "SELECT * FROM ProgramObrazovanja";
+
+        try (Connection connection = DatabaseService.createConnection();
+             PreparedStatement statement = connection.prepareStatement(query2);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                int idProgramObrazovanja = resultSet.getInt("ProgramObrazovanjaID");
                 String Naziv = resultSet.getString("Naziv");
-                int NastavnikId = resultSet.getInt("NastavnikId");
-
-                System.out.println("ID razreda: " + idRazred + ", Naziv: " + Naziv + ", Nastavnik ID: " + NastavnikId);
-            };
+                int csvet = resultSet.getInt("CSVET");
+                System.out.println("Program obrazovanja: " + Naziv + ", CSVET: " + csvet + ", Program obrazovanja ID: " + idProgramObrazovanja);
+            }
+            ;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        String unos = scanner.nextLine();
-
-        if (unos.equals("0")) {
-            return;
-        }
+        int programObrazovanjaID = scanner.nextInt();
 
         try (Connection connection = DatabaseService.createConnection()) {
-            String query2 = "INSERT INTO Ucenik (Ime, Prezime, RazredId ) VALUES (?,?,?)";
-            PreparedStatement statement = connection.prepareStatement(query2);
-            statement.setString(1, ime);
-            statement.setString(2, prezime);
-            statement.setString(3, unos);
-
+            String query3 = "INSERT INTO Upis (IDPolaznik, IDProgramObrazovanja) VALUES (?,?)";
+            PreparedStatement statement = connection.prepareStatement(query3);
+            statement.setInt(1, polaznikID);
+            statement.setInt(2, programObrazovanjaID);
 
             int result = statement.executeUpdate();
-            System.out.println("Ucenik " + ime + " " + prezime + " je uspješno unesen u bazu.");
+            System.out.println("Polaznik je uspješno upisan!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void prebacivanjePolaznikaNaDrugiProgramObrazovanja(Scanner scanner) {
+        System.out.println("Unesite ID polaznika kojeg želite prebaciti u novi program obrazovanja: ");
+        String query1 = "SELECT * FROM Polaznik";
+
+        try (Connection connection = DatabaseService.createConnection();
+             PreparedStatement statement = connection.prepareStatement(query1);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                int idPolaznik = resultSet.getInt("PolaznikID");
+                String Ime = resultSet.getString("Ime");
+                String Prezime = resultSet.getString("Prezime");
+                System.out.println("Ime: " + Ime + ", Prezime: " + Prezime + ", Polaznik ID: " + idPolaznik);
+            }
+            ;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-    }
+        int idPolaznik = scanner.nextInt();
 
-
-    private static void brisanjeUcenika(Scanner scanner) {
-        System.out.println("Unesite ID učenika kojeg želite obrisati: ");
-        int IDucenika = scanner.nextInt();
-        try (Connection connection = DatabaseService.createConnection()) {
-            String query = "DELETE FROM Ucenik WHERE Id=?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, IDucenika);
-            int result = statement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private static void updateImenaPrezimenaNastavnika(Scanner scanner) {
-        System.out.println("Unesite ID nastavnika čije ime i prezime želite izmjeniti: ");
-        int idNastavnika = scanner.nextInt();
         scanner.nextLine();
-        System.out.println("Unesite novo ime nastavnika: ");
-        String novoIme = scanner.nextLine();
-        System.out.println("Unesite novo prezime nastavnika: ");
-        String novoPrezime = scanner.nextLine();
-        System.out.println("Unesite novi email nastavnika: ");
-        String noviEmail = scanner.nextLine();
-        try (Connection connection = DatabaseService.createConnection()) {
-            String query = "UPDATE Nastavnik SET Ime = ?, Prezime = ?, Email = ? WHERE Id = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, novoIme);
-            statement.setString(2, novoPrezime);
-            statement.setString(3, noviEmail);
-            statement.setInt(4, idNastavnika);
 
-            int result = statement.executeUpdate();
-            System.out.println("Nastavnik uspješno promijenjen u bazi.");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+        System.out.println("Unesite ID programa obrazovanja na koji želite upisati navedenog polaznika: ");
+        String query2 = "SELECT * FROM ProgramObrazovanja";
 
-    private static void prebacivanjeUcenikaUNoviRazred(Scanner scanner) {
-        System.out.println("Unesite ID učenika kojeg želite prebaciti: ");
-        int ucenikId = scanner.nextInt();
-        System.out.println("Unesite ID novog razreda u koji želite prebaciti učenika: ");
-        int noviRazredId = scanner.nextInt();
+        try (Connection connection = DatabaseService.createConnection();
+             PreparedStatement statement = connection.prepareStatement(query2);
+             ResultSet resultSet = statement.executeQuery()) {
 
-        try (Connection connection = DatabaseService.createConnection()) {
-            String query = "UPDATE Ucenik SET RazredId = ? WHERE Id = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, noviRazredId);
-            statement.setInt(2, ucenikId);
-
-            int result = statement.executeUpdate();
-            if (result > 0) {
-                System.out.println("Učenik je uspješno prebačen u novi razred.");
-            } else {
-                System.out.println("Nema učenika s tim ID-jem.");
+            while (resultSet.next()) {
+                int idProgramObrazovanja = resultSet.getInt("ProgramObrazovanjaID");
+                String Naziv = resultSet.getString("Naziv");
+                int csvet = resultSet.getInt("CSVET");
+                System.out.println("Program obrazovanja: " + Naziv + ", CSVET: " + csvet + ", Program obrazovanja ID: " + idProgramObrazovanja);
             }
+            ;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
 
-    private static void unosNovogRazreda(Scanner scanner) {
-        System.out.println("Unesite ime nastavnika: ");
-        String imeNastavnika = scanner.nextLine();
-        System.out.println("Unesite prezime nastavnika: ");
-        String prezimeNastavnika = scanner.nextLine();
-        System.out.println("Unesite email nastavnika: ");
-        String emailNastavnika = scanner.nextLine();
+        int idPrograma = scanner.nextInt();
 
-        int nastavnikId = 0;
         try (Connection connection = DatabaseService.createConnection()) {
-            String query = "INSERT INTO Nastavnik (Ime, Prezime, Email) VALUES (?, ?, ?)";
-            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, imeNastavnika);
-            statement.setString(2, prezimeNastavnika);
-            statement.setString(3, emailNastavnika);
-            int result = statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
-            if (rs.next()) {
-                nastavnikId = rs.getInt(1);
-                System.out.println("Nastavnik ID: " + nastavnikId);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            try {
+                String query3 = "DELETE FROM Upis WHERE IDPolaznik=?";
+                PreparedStatement statement1 = connection.prepareStatement(query3);
+                statement1.setInt(1, idPolaznik);
+                int result1 = statement1.executeUpdate();
 
-        if (nastavnikId > 0) {
-            System.out.println("Unesite naziv novog razreda: ");
-            String nazivRazreda = scanner.nextLine();
+                if (result1 > 0) {
+                    System.out.println("Polaznik obrisan.");
+                } else {
+                    System.out.println("Nema polaznika s navedenim ID-jem.");
+                }
+                String query4 = "INSERT INTO Upis VALUES=(?,?)";
+                PreparedStatement statement2 = connection.prepareStatement(query4);
+                statement2.setInt(1, idPolaznik);
+                statement2.setInt(2, idPrograma);
 
-            try (Connection connection = DatabaseService.createConnection()) {
-                String query = "INSERT INTO Razred (Naziv, NastavnikId) VALUES (?, ?)";
-                PreparedStatement statement = connection.prepareStatement(query);
-                statement.setString(1, nazivRazreda);
-                statement.setInt(2, nastavnikId);
+                int result2 = statement2.executeUpdate();
 
-                int result = statement.executeUpdate();
-                System.out.println("Razred " + nazivRazreda + " je uspješno unesen u bazu.");
+                if (result2 > 0) {
+                    System.out.println("Upis obavljem.");
+                } else {
+                    System.out.println("Nema programa s tim ID-jem.");
+                }
+
+                connection.commit();
+                System.out.println("Polaznik uspješno prebačen u novi program obrazovanja.");
+
             } catch (SQLException e) {
-                e.printStackTrace();
+                connection.rollback();
+                System.err.println("Greška u transakciji: " + e.getMessage());
             }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
     }
-    private static void ispisSvihUcenikaURazredu(Scanner scanner) {
-        System.out.println("Unesite ID razreda čije učenike želite ispisati: ");
-        int IDrazreda = scanner.nextInt();
+
+
+    private static void ispisPolaznikaUProgramuObrazovanja(Scanner scanner) {
+        System.out.println("Unesite ID programa obrazovanja čije polaznike želite ispisati: ");
+        int programObrazovanjaId = scanner.nextInt();
 
         try (Connection connection = DatabaseService.createConnection()) {
-            String query = "SELECT u.Ime AS imeUcenika, u.Prezime AS prezimeUcenika, Razred.Naziv AS nazivRazreda, " +
-                    "Nastavnik.Ime AS imeNastavnika, Nastavnik.Prezime AS prezimeNastavnika " +
-                    "FROM Ucenik AS u " +
-                    "LEFT JOIN Razred ON u.RazredId = Razred.Id " +
-                    "LEFT JOIN Nastavnik ON Nastavnik.Id = Razred.NastavnikId " +
-                    "WHERE Razred.Id = ?";
+            String query = "SELECT p.Ime AS imePolaznika, p.Prezime AS prezimePolaznika, ProgramObrazovanja.Naziv AS nazivPrograma, " +
+                    "ProgramObrazovanja.CSVET AS csvet" +
+                    "FROM Polaznik AS p " +
+                    "LEFT JOIN ProgramObrazovanja ON p.PolaznikID = ProgramObrazovanja.IDPolaznik " +
+                    "WHERE ProgramObrazovanja.ProgramObrazovanjaID = ?";
 
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, IDrazreda);
+                statement.setInt(1, programObrazovanjaId);
 
                 try (ResultSet resultSet = statement.executeQuery()) {
 
                     while (resultSet.next()) {
-                        String imeUcenika = resultSet.getString("imeUcenika");
-                        String prezimeUcenika = resultSet.getString("prezimeUcenika");
-                        String nazivRazreda = resultSet.getString("nazivRazreda");
-                        String imeNastavnika = resultSet.getString("imeNastavnika");
-                        String prezimeNastavnika = resultSet.getString("prezimeNastavnika");
+                        String imePolaznika = resultSet.getString("imePolaznika");
+                        String prezimePolaznika = resultSet.getString("prezimePolaznika");
+                        String nazivPrograma = resultSet.getString("nazivPrograma");
+                        int csvet = resultSet.getInt("csvet");
 
-                        System.out.println("Učenik: " + imeUcenika + " " + prezimeUcenika +
-                                ", Razred: " + nazivRazreda +
-                                ", Nastavnik: " + imeNastavnika + " " + prezimeNastavnika);
+                        System.out.println("Polaznik: " + imePolaznika + " " + prezimePolaznika +
+                                ", Program obrazovanja: " + nazivPrograma +
+                                ", CSVET: " + csvet);
 
                     }
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-
 }
 
 
